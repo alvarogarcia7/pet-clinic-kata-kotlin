@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: pet.clinic
+---
+testFramework: spek
+sourceLanguage: kotlin
