@@ -4,24 +4,27 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
-import khttp.get
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import pet.clinic.infrastructure.delivery.VeterinarianDTO
 import kotlin.test.assertEquals
 
 object VeterinariansSpec : Spek({
+    val embeddedServer: EmbeddedServer = ApplicationContext.run(EmbeddedServer::class.java)
+    val url = embeddedServer.url
+    fun get(uri: String) = khttp.get(url.toString() + uri).text
     describe("Veterinarians") {
         it("should be listed, with ID and name, but no specialties") {
-            val embeddedServer: EmbeddedServer = ApplicationContext.run(EmbeddedServer::class.java)
 
-            var veterinarian = jacksonObjectMapper().readValue<VeterinarianDTO>(get(embeddedServer))
+            val content = get("/veterinarians/1")
 
-            assertEquals(VeterinarianDTO("1", "John"), veterinarian)
+            assertEquals(VeterinarianDTO("1", "John"), readAs(content))
         }
     }
 })
 
-private fun get(embeddedServer: EmbeddedServer) =
-        get(embeddedServer.url.toString() + "/veterinarians/1").text
+
+val objectMapper = jacksonObjectMapper()
+private inline fun <reified T : Any> readAs(content: String) = objectMapper.readValue<T>(content)
+
 
