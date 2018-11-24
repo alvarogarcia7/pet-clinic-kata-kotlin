@@ -9,9 +9,11 @@ import io.micronaut.http.annotation.Produces
 @Controller("/veterinarians")
 class VeterinariansController {
 
+    private val objectMapper = jacksonObjectMapper()
+
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     fun detail(id: String): String {
-        return jacksonObjectMapper().writeValueAsString(VeterinarianDTO(id, "John"))
+        return objectMapper.writeValueAsString(VeterinarianDTO(id, "John"))
     }
 }
