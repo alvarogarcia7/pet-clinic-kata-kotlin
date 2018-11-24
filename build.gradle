@@ -3,10 +3,10 @@ plugins {
     id "com.github.johnrengelman.shadow" version "4.0.2"
     id "org.jetbrains.kotlin.jvm" version "1.2.61"
     id "org.jetbrains.kotlin.kapt" version "1.2.61"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.2.61"	
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.2.61"
 }
 
-apply plugin:"application"
+apply plugin: "application"
 
 version "0.1"
 group "pet.clinic"
@@ -24,6 +24,7 @@ dependencyManagement {
     }
 }
 
+def arrow_version = "0.8.1"
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
@@ -39,6 +40,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
+    compile "io.arrow-kt:arrow-core:$arrow_version"
+
 }
 
 shadowJar {
@@ -56,20 +59,20 @@ test {
 }
 
 allOpen {
-	annotation("io.micronaut.aop.Around")
+    annotation("io.micronaut.aop.Around")
 }
 
 compileKotlin {
-	kotlinOptions {
-	    jvmTarget = '1.8' 
-	    //Will retain parameter names for Java reflection
-	    javaParameters = true 
-	}
+    kotlinOptions {
+        jvmTarget = '1.8'
+        //Will retain parameter names for Java reflection
+        javaParameters = true
+    }
 }
 
 compileTestKotlin {
-	kotlinOptions {
-	    jvmTarget = '1.8' 
-	    javaParameters = true 
-	}
+    kotlinOptions {
+        jvmTarget = '1.8'
+        javaParameters = true
+    }
 }
