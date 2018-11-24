@@ -10,9 +10,9 @@ import pet.clinic.infrastructure.delivery.VeterinarianDTO
 @Controller("/veterinarians")
 class VeterinariansController {
 
-    @Get("/1")
+    @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    fun list(): String {
-        return jacksonObjectMapper().writeValueAsString(VeterinarianDTO("1", "John"))
+    fun detail(id: String): String {
+        return jacksonObjectMapper().writeValueAsString(VeterinarianDTO(id, "John"))
     }
 }
