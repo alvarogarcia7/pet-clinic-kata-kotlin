@@ -11,4 +11,9 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
+    <!--https://github.com/ronmamo/reflections/issues/80#issuecomment-369310174-->
+    <logger name="org.reflections.Reflections" level="error"
+            additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 </configuration>
