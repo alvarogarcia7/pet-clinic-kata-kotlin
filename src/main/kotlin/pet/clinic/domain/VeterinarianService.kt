@@ -5,12 +5,24 @@ import io.micronaut.context.annotation.Prototype
 
 interface VeterinarianService {
     fun list(id: Id): Option<Veterinarian>
+    fun allVeterinarians(): List<Persisted<Veterinarian>>
 }
 
 
 @Prototype // https://docs.micronaut.io/latest/guide/index.html#scopes
 class InMemoryVeterinarianService : VeterinarianService {
+
+    override fun allVeterinarians(): List<Persisted<Veterinarian>> {
+        return listOf(Persisted(Id.from("1"), JOHN), Persisted(Id.from("2"), PAUL))
+    }
+
+    val COMMON_SPECIALTIES = listOf(Specialty(Id.from("1"), "radiology"))
+
+
+    private val JOHN = Veterinarian("John", COMMON_SPECIALTIES)
+    private val PAUL = Veterinarian("Paul", COMMON_SPECIALTIES)
+
     override fun list(id: Id): Option<Veterinarian> {
-        return Option.just(Veterinarian("John", listOf(Specialty(Id.from("1"), "radiology"))))
+        return Option.just(JOHN)
     }
 }

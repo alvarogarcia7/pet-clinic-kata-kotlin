@@ -15,11 +15,20 @@ object VeterinariansSpec : Spek({
     val url = embeddedServer.url
     fun get(uri: String) = khttp.get(url.toString() + uri).text
     describe("Veterinarians") {
-        it("should be listed, with ID and name") {
+        it("should have a detail") {
 
             val content = get("/veterinarians/1")
 
             assertEquals(VeterinarianDTO("1", "John", listOf(SpecialtyDTO("1", "radiology"))), readAs(content))
+        }
+        it("should have a list of all of them") {
+
+            val content = get("/veterinarians/")
+
+            assertEquals(listOf(
+                    VeterinarianDTO("1", "John", listOf(SpecialtyDTO("1", "radiology"))),
+                    VeterinarianDTO("2", "Paul", listOf(SpecialtyDTO("1", "radiology")))),
+                    readAs(content))
         }
     }
 })

@@ -27,6 +27,16 @@ class VeterinariansController(private val service: VeterinarianService) {
         }
     }
 
+    @Get("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun list(): String {
+        return objectMapper.writeValueAsString(allVeterinarians())
+    }
+
+    private fun allVeterinarians(): List<VeterinarianDTO> =
+            service.allVeterinarians()
+                    .map { aNewVeterinarian(it.id.value, it.value) }
+
     private fun fakeVeterinarian(id: String) = this.service
             .list(Id.from(id))
             .map { aNewVeterinarian(id, it) }
