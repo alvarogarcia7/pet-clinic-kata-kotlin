@@ -20,18 +20,18 @@ class VeterinariansController(private val service: VeterinarianService) {
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     fun detail(id: String): String {
-        val dto = x(id)
+        val dto = fakeVeterinarian(id)
         return when (dto) {
             is None -> ""
             is Some -> objectMapper.writeValueAsString(dto.t)
         }
     }
 
-    private fun x(id: String) = this.service
+    private fun fakeVeterinarian(id: String) = this.service
             .list(Id.from(id))
-            .map { mapx(id, it) }
+            .map { aNewVeterinarian(id, it) }
 
-    private fun mapx(id: String, value: Veterinarian): VeterinarianDTO {
+    private fun aNewVeterinarian(id: String, value: Veterinarian): VeterinarianDTO {
         return VeterinarianDTO(id, value.name, map(value.specialties))
 
     }
