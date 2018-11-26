@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import pet.clinic.domain.Id
+import pet.clinic.domain.Specialty
 import pet.clinic.domain.Veterinarian
 import pet.clinic.domain.VeterinarianService
 
@@ -31,7 +32,11 @@ class VeterinariansController(private val service: VeterinarianService) {
             .map { mapx(id, it) }
 
     private fun mapx(id: String, value: Veterinarian): VeterinarianDTO {
-        return VeterinarianDTO(id, value.name)
+        return VeterinarianDTO(id, value.name, map(value.specialties))
 
+    }
+
+    private fun map(specialties: List<Specialty>): List<SpecialtyDTO> {
+        return specialties.map { SpecialtyDTO(it.id.value, it.description) }
     }
 }

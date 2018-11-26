@@ -11,6 +11,6 @@ interface VeterinarianService {
 @Prototype // https://docs.micronaut.io/latest/guide/index.html#scopes
 class InMemoryVeterinarianService : VeterinarianService {
     override fun list(id: Id): Option<Veterinarian> {
-        return Option.just(Veterinarian("John"))
+        return Option.just(Veterinarian("John", listOf(Specialty(Id.from("1"), "radiology"))))
     }
 }
