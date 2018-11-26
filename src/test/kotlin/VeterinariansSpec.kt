@@ -38,6 +38,6 @@ object VeterinariansSpec : Spek({
 
 
 val objectMapper = jacksonObjectMapper()
-private inline fun <reified T : Any> readAs(content: String) = objectMapper.readValue<T>(content)
+inline fun <reified T : Any> readAs(content: String) = objectMapper.readValue<T>(content)
 
 
