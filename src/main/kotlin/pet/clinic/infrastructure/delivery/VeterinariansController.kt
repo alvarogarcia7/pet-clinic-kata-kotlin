@@ -32,7 +32,7 @@ class VeterinariansController(private val service: VeterinarianService) {
 
     private fun allVeterinarians(): List<VeterinarianDTO> =
             service.allVeterinarians()
-                    .map { aNewVeterinarian(it) }
+                    .map(this::aNewVeterinarian)
 
     private fun fakeVeterinarian(id: String) = this.service
             .list(Id.from(id))
