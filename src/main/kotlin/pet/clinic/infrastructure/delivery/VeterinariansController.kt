@@ -7,7 +7,11 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
-import pet.clinic.domain.*
+import pet.clinic.domain.common.Id
+import pet.clinic.domain.common.Persisted
+import pet.clinic.domain.veterinarians.Specialty
+import pet.clinic.domain.veterinarians.Veterinarian
+import pet.clinic.domain.veterinarians.VeterinarianService
 
 @Controller("/veterinarians")
 class VeterinariansController(private val service: VeterinarianService) {

@@ -1,4 +1,4 @@
-package pet.clinic.domain
+package pet.clinic.domain.common
 
 import java.util.*
 

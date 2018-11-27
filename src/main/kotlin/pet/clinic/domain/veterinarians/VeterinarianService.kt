@@ -1,7 +1,9 @@
-package pet.clinic.domain
+package pet.clinic.domain.veterinarians
 
 import arrow.core.Option
 import io.micronaut.context.annotation.Prototype
+import pet.clinic.domain.common.Id
+import pet.clinic.domain.common.Persisted
 
 interface VeterinarianService {
     fun list(id: Id): Option<Persisted<Veterinarian>>

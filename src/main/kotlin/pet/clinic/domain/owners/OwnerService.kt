@@ -1,7 +1,11 @@
-package pet.clinic.domain
+package pet.clinic.domain.owners
 
 import arrow.core.Option
 import io.micronaut.context.annotation.Prototype
+import pet.clinic.domain.common.Id
+import pet.clinic.domain.common.Name
+import pet.clinic.domain.common.Persisted
+import pet.clinic.domain.pets.Pet
 
 interface OwnerService {
     fun list(id: Id): Option<Persisted<Owner>>
