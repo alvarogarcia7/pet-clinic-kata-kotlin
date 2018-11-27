@@ -4,15 +4,15 @@ import arrow.core.Option
 import io.micronaut.context.annotation.Prototype
 
 interface OwnerService {
-    fun list(id: Id): Option<Owner>
+    fun list(id: Id): Option<Persisted<Owner>>
     fun all(): List<Persisted<Owner>>
 }
 
 
 @Prototype // https://docs.micronaut.io/latest/guide/index.html#scopes
 class InMemoryOwnerService : OwnerService {
-    override fun list(id: Id): Option<Owner> {
-        return Option.just(JOHN)
+    override fun list(id: Id): Option<Persisted<Owner>> {
+        return Option.just(Persisted(id, JOHN))
     }
 
     override fun all(): List<Persisted<Owner>> {

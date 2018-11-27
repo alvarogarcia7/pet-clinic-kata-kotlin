@@ -7,10 +7,7 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
-import pet.clinic.domain.Id
-import pet.clinic.domain.Owner
-import pet.clinic.domain.OwnerService
-import pet.clinic.domain.Pet
+import pet.clinic.domain.*
 
 @Controller("/owners")
 class OwnersController(private val service: OwnerService) {
@@ -35,15 +32,14 @@ class OwnersController(private val service: OwnerService) {
 
     private fun allOwners() =
             service.all()
-                    .map { aNewOwner(it.id.value, it.value) }
+                    .map(this::aNewOwner)
 
     private fun fakeOwner(id: String) = this.service
             .list(Id.from(id))
-            .map { aNewOwner(id, it) }
+            .map { aNewOwner(it) }
 
-    private fun aNewOwner(id: String, value: Owner): OwnerDTO {
-        return OwnerDTO(id, value.name.first, value.address.fullAddress, value.address.city, value.address.phone, map(value.pets))
-
+    private fun aNewOwner(it: Persisted<Owner>): OwnerDTO {
+        return OwnerDTO(it.id.value, it.value.name.first, it.value.address.fullAddress, it.value.address.city, it.value.address.phone, map(it.value.pets))
     }
 
     private fun map(specialties: List<Pet>): List<PetDTO> {
