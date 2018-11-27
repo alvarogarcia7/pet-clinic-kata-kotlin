@@ -13,3 +13,5 @@ data class Id private constructor(val value: String) {
         }
     }
 }
+
+data class Persisted<out T>(val id: Id, val value: T)
