@@ -1,3 +1,3 @@
 package pet.clinic.domain
 
-data class Persisted<T>(val id: Id, val value: T)
+data class Persisted<out T>(val id: Id, val value: T)
