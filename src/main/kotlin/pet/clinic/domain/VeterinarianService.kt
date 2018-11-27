@@ -4,7 +4,7 @@ import arrow.core.Option
 import io.micronaut.context.annotation.Prototype
 
 interface VeterinarianService {
-    fun list(id: Id): Option<Veterinarian>
+    fun list(id: Id): Option<Persisted<Veterinarian>>
     fun allVeterinarians(): List<Persisted<Veterinarian>>
 }
 
@@ -22,7 +22,7 @@ class InMemoryVeterinarianService : VeterinarianService {
     private val JOHN = Veterinarian("John", COMMON_SPECIALTIES)
     private val PAUL = Veterinarian("Paul", COMMON_SPECIALTIES)
 
-    override fun list(id: Id): Option<Veterinarian> {
-        return Option.just(JOHN)
+    override fun list(id: Id): Option<Persisted<Veterinarian>> {
+        return Option.just(Persisted(id, JOHN))
     }
 }

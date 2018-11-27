@@ -7,10 +7,7 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
-import pet.clinic.domain.Id
-import pet.clinic.domain.Specialty
-import pet.clinic.domain.Veterinarian
-import pet.clinic.domain.VeterinarianService
+import pet.clinic.domain.*
 
 @Controller("/veterinarians")
 class VeterinariansController(private val service: VeterinarianService) {
@@ -35,14 +32,14 @@ class VeterinariansController(private val service: VeterinarianService) {
 
     private fun allVeterinarians(): List<VeterinarianDTO> =
             service.allVeterinarians()
-                    .map { aNewVeterinarian(it.id.value, it.value) }
+                    .map { aNewVeterinarian(it) }
 
     private fun fakeVeterinarian(id: String) = this.service
             .list(Id.from(id))
-            .map { aNewVeterinarian(id, it) }
+            .map { aNewVeterinarian(it) }
 
-    private fun aNewVeterinarian(id: String, value: Veterinarian): VeterinarianDTO {
-        return VeterinarianDTO(id, value.name, map(value.specialties))
+    private fun aNewVeterinarian(value: Persisted<Veterinarian>): VeterinarianDTO {
+        return VeterinarianDTO(value.id.value, value.value.name, map(value.value.specialties))
 
     }
 
