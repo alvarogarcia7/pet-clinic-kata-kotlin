@@ -3,10 +3,9 @@ package pet.clinic.infrastructure.delivery
 import arrow.core.None
 import arrow.core.Some
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Produces
+import io.micronaut.http.annotation.*
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.owners.Owner
@@ -32,6 +31,13 @@ class OwnersController(private val service: OwnerService) {
     @Produces(MediaType.APPLICATION_JSON)
     fun list(): String {
         return objectMapper.writeValueAsString(allOwners())
+    }
+
+    @Patch("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    fun update(id: String): HttpResponse<Void> {
+        return HttpResponse.accepted()
     }
 
     private fun allOwners() =
