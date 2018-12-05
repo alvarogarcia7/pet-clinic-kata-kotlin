@@ -36,7 +36,7 @@ dependencies {
     kaptTest "io.micronaut:micronaut-inject-java"
     runtime "ch.qos.logback:logback-classic:1.2.3"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
-    testCompile 'khttp:khttp:0.1.0'
+    testCompile 'com.github.kittinunf.fuel:fuel:1.15.1'
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"

@@ -33,7 +33,7 @@ class OwnersController(private val service: OwnerService) {
         return objectMapper.writeValueAsString(allOwners())
     }
 
-    @Patch("/{id}")
+    @Post("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     fun update(id: String): HttpResponse<Void> {
