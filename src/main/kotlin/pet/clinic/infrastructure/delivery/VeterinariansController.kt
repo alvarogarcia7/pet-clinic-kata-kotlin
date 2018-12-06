@@ -3,9 +3,11 @@ package pet.clinic.infrastructure.delivery
 import arrow.core.None
 import arrow.core.Some
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Produces
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Persisted
@@ -26,6 +28,14 @@ class VeterinariansController(private val service: VeterinarianService) {
             is None -> ""
             is Some -> objectMapper.writeValueAsString(dto.t)
         }
+    }
+
+    @Post("/{id}")
+    @Produces()
+    fun upsert(id: String, body: VeterinarianDTO): HttpResponse<Void> {
+        val id = Id.from(id)
+        service.upsert(id, body.toDomain(id))
+        return HttpResponse.accepted()
     }
 
     @Get("/")

@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import io.micronaut.context.ApplicationContext
+import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -24,18 +25,23 @@ object VeterinariansSpec : Spek({
         val JOHN = VeterinarianDTO("1", "John", listOfRadiology)
 
         it("should have a detail") {
+            val creation = client.post("/veterinarians/1", JOHN)
+            assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
 
             val content = client.get("/veterinarians/1").response().second
 
             assertEquals(JOHN, readAs(content))
         }
         it("should have a list of all of them") {
+            val PAUL = VeterinarianDTO("2", "Paul", listOfRadiology)
+            val creation = client.post("/veterinarians/2", PAUL)
+            assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
 
             val content = client.get("/veterinarians/").response().second
 
             assertEquals(listOf(
                     JOHN,
-                    VeterinarianDTO("2", "Paul", listOfRadiology)),
+                    PAUL),
                     readAs(content))
         }
     }
