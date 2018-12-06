@@ -26,9 +26,7 @@ class HttpClient(private val url: URL) {
     }
 
     fun post(uri: String, payload: Any): Request {
-        println(payload)
         val destination = url.toString() + uri
-        println(destination)
         val jsonBody = destination
                 .httpPost()
                 .body(objectMapper.writeValueAsString(payload))

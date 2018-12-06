@@ -20,7 +20,6 @@ object VeterinariansSpec : Spek({
     val client = HttpClient(url)
 
     describe("Veterinarians") {
-        println(url.toString())
         val listOfRadiology = listOf(SpecialtyDTO("1", "radiology"))
         val JOHN = VeterinarianDTO("1", "John", listOfRadiology)
 
