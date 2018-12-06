@@ -34,9 +34,10 @@ class OwnersController(private val service: OwnerService) {
     }
 
     @Post("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    fun update(id: String): HttpResponse<Void> {
+    @Consumes
+    @Produces
+    fun update(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
+        service.update(Id.from(id), body)
         return HttpResponse.accepted()
     }
 

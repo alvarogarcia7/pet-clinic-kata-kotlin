@@ -1,11 +1,13 @@
 package pet.clinic
 
+import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPatch
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.github.kittinunf.result.Result
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.type.Headers
 import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
@@ -31,20 +33,26 @@ object OwnersSpec : Spek({
                 }
             }
 
-    fun patch(uri: String, payload: String) = (url.toString() + "/" + uri)
-            .httpPost()
-            .body(payload)
-            .header("Content-Type" to "application/json")
-            .responseString { _, _, result ->
-                when (result) {
-                    is Result.Failure -> {
-                        result.getException()
-                    }
-                    is Result.Success -> {
-                        result.get()
+    fun patch(uri: String, payload: String): Request {
+        println(payload)
+        val destination = url.toString() + uri
+        println(destination)
+        val jsonBody = destination
+                .httpPost()
+                .body(payload)
+        jsonBody.headers["Content-Type"] = "application/json"
+        return jsonBody
+                .responseString { x, y, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            result.getException()
+                        }
+                        is Result.Success -> {
+                            result.get()
+                        }
                     }
                 }
-            }
+    }
     describe("Objects") {
         val JOHN = OwnerDTO("1", "John", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky")))
         val HARRY = OwnerDTO("2", "Harry", "1451 Oak Blvd", "Morona", "608555388", listOf(
