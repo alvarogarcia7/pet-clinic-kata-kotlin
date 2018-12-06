@@ -34,6 +34,8 @@ object OwnersSpec : Spek({
             assertEquals(JOHN, readAs(content))
         }
         it("should have a list of all of them") {
+            val update = client.post("/owners/2", HARRY)
+            assertEquals(HttpStatus.ACCEPTED.code, update.response().second.statusCode)
 
             val content = client.get("/owners/").response().second
 
