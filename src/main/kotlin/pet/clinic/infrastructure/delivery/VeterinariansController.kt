@@ -14,6 +14,7 @@ import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.veterinarians.Specialty
 import pet.clinic.domain.veterinarians.Veterinarian
 import pet.clinic.domain.veterinarians.VeterinarianService
+import java.net.URI
 
 @Controller("/veterinarians")
 class VeterinariansController(private val service: VeterinarianService) {
@@ -30,12 +31,12 @@ class VeterinariansController(private val service: VeterinarianService) {
         }
     }
 
-    @Post("/{id}")
+    @Post("/")
     @Produces()
-    fun upsert(id: String, body: VeterinarianDTO): HttpResponse<Void> {
-        val id = Id.from(id)
+    fun upsert(body: VeterinarianDTO): HttpResponse<Void> {
+        val id = Id.random()
         service.upsert(id, body.toDomain(id))
-        return HttpResponse.accepted()
+        return HttpResponse.accepted(URI.create("/veterinarians/${id.value}"))
     }
 
     @Get("/")
