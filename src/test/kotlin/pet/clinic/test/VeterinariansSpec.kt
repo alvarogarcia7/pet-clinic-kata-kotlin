@@ -16,6 +16,7 @@ import pet.clinic.infrastructure.delivery.VeterinarianDTO
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 object VeterinariansSpec : Spek({
     val embeddedServer: EmbeddedServer = ApplicationContext.run(EmbeddedServer::class.java)
@@ -29,6 +30,8 @@ object VeterinariansSpec : Spek({
         it("should have a detail") {
             val creation = client.post("/veterinarians/", JOHN)
             assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            val newResource = creation.response().second.headers["Location"]!![0]
+
             creation.responseString{_,res,it->
                 when(it){
                     is Result.Success -> {
@@ -37,17 +40,21 @@ object VeterinariansSpec : Spek({
                         println(responseBody)
                         assertTrue(responseBody.links.isNotEmpty())
                     }
+                    else -> {
+                        fail("")
+                    }
                 }
             }
 
-            val content = client.get("/veterinarians/1").response().second
+            val content = client.get(newResource).response().second
 
-            assertEquals(JOHN, readAs(content))
+            assertEquals(JOHN.copy(id=newResource.split("/").last()), readAs(content))
         }
         it("should have a list of all of them") {
             val PAUL = VeterinarianDTO("2", "Paul", listOfRadiology)
             val creation = client.post("/veterinarians/", PAUL)
             assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            creation.response().second
 
             val content = client.get("/veterinarians/").response().second
 
