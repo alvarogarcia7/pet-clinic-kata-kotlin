@@ -16,18 +16,8 @@ import kotlin.test.assertEquals
 object VeterinariansSpec : Spek({
     val embeddedServer: EmbeddedServer = ApplicationContext.run(EmbeddedServer::class.java)
     val url = embeddedServer.url
-    fun get(uri: String) = (url.toString() + uri)
-            .httpGet()
-            .responseString { _, _, result ->
-                when (result) {
-                    is Result.Failure -> {
-                        result.getException()
-                    }
-                    is Result.Success -> {
-                        result.get()
-                    }
-                }
-            }
+    val client = HttpClient(url)
+
     describe("Veterinarians") {
         println(url.toString())
         val listOfRadiology = listOf(SpecialtyDTO("1", "radiology"))
@@ -35,13 +25,13 @@ object VeterinariansSpec : Spek({
 
         it("should have a detail") {
 
-            val content = get("/veterinarians/1").response().second
+            val content = client.get("/veterinarians/1").response().second
 
             assertEquals(JOHN, readAs(content))
         }
         it("should have a list of all of them") {
 
-            val content = get("/veterinarians/").response().second
+            val content = client.get("/veterinarians/").response().second
 
             assertEquals(listOf(
                     JOHN,
