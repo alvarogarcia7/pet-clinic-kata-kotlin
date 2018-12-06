@@ -37,7 +37,7 @@ class OwnersController(private val service: OwnerService) {
     @Consumes
     @Produces
     fun update(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
-        service.update(Id.from(id), body)
+        service.update(Id.from(id), body.toDomain())
         return HttpResponse.accepted()
     }
 

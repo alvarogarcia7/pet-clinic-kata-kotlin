@@ -6,12 +6,11 @@ import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Name
 import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.pets.Pet
-import pet.clinic.infrastructure.delivery.ChangeOwnerDTO
 
 interface OwnerService {
     fun list(id: Id): Option<Persisted<Owner>>
     fun all(): List<Persisted<Owner>>
-    fun update(id: Id, changeOwner: ChangeOwnerDTO)
+    fun update(id: Id, changeRequest: Owner)
 }
 
 
@@ -22,8 +21,9 @@ class InMemoryOwnerService : OwnerService {
     private val Harry = Owner(Name("Harry"), Address("1451 Oak Blvd", "Morona", "608555388"), listOf(lucky, Pet(Id.from("2"), Name("Agatha"))))
     private val values: MutableMap<Id, Persisted<Owner>> = mutableMapOf(Id.from("1") to Persisted(Id.from("1"), JOHN), Id.from("2") to Persisted(Id.from("2"), Harry))
 
-    override fun update(id: Id, changeOwner: ChangeOwnerDTO) {
-        this.values[id] = Persisted(id, Owner(changeOwner.toName(), changeOwner.toAddress(), changeOwner.toPets()))
+    override fun update(id: Id, changeRequest: Owner) {
+        val newOwner = changeRequest.changeWith(changeRequest)
+        this.values[id] = Persisted(id, newOwner)
     }
 
     override fun list(id: Id): Option<Persisted<Owner>> {

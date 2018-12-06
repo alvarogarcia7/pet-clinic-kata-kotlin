@@ -3,6 +3,7 @@ package pet.clinic.infrastructure.delivery
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Name
 import pet.clinic.domain.owners.Address
+import pet.clinic.domain.owners.Owner
 import pet.clinic.domain.pets.Pet
 
 data class ChangeOwnerDTO(val name: String,
@@ -24,5 +25,10 @@ data class ChangeOwnerDTO(val name: String,
 
     private fun toPet(dto: PetDTO) : Pet{
         return Pet(Id.from(dto.id), Name(dto.name))
+    }
+
+    fun toDomain(): Owner {
+        val changeOwner = this
+        return Owner(changeOwner.toName(), changeOwner.toAddress(), changeOwner.toPets())
     }
 }
