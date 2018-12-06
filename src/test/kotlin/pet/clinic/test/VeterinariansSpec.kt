@@ -42,7 +42,4 @@ object VeterinariansSpec : Spek({
 })
 
 
-val objectMapper = jacksonObjectMapper()
-inline fun <reified T : Any> readAs(content: Response) = objectMapper.readValue<T>(content.data)
-
 

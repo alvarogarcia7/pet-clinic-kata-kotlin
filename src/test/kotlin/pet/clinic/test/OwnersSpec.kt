@@ -42,7 +42,7 @@ object OwnersSpec : Spek({
         }
         it("should be updateable") {
 
-            val update = client.post("/owners/1", payload = objectMapper.writeValueAsString(ChangeOwnerDTO("Jaume", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky")))))
+            val update = client.post("/owners/1", ChangeOwnerDTO("Jaume", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky"))))
 
             assertEquals(HttpStatus.ACCEPTED.code, update.response().second.statusCode)
 

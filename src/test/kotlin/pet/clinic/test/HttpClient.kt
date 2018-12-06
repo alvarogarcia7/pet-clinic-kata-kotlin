@@ -1,5 +1,7 @@
 package pet.clinic.test
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
@@ -23,13 +25,13 @@ class HttpClient(private val url: URL) {
                 }
     }
 
-    fun post(uri: String, payload: String): Request {
+    fun post(uri: String, payload: Any): Request {
         println(payload)
         val destination = url.toString() + uri
         println(destination)
         val jsonBody = destination
                 .httpPost()
-                .body(payload)
+                .body(objectMapper.writeValueAsString(payload))
         jsonBody.headers["Content-Type"] = "application/json"
         return jsonBody
                 .responseString { x, y, result ->
@@ -44,3 +46,6 @@ class HttpClient(private val url: URL) {
                 }
     }
 }
+
+val objectMapper = jacksonObjectMapper()
+inline fun <reified T : Any> readAs(content: Response) = objectMapper.readValue<T>(content.data)
