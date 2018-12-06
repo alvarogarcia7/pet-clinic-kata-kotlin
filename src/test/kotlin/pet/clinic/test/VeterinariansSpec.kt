@@ -1,4 +1,4 @@
-package pet.clinic
+package pet.clinic.test
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

@@ -1,13 +1,10 @@
-package pet.clinic
+package pet.clinic.test
 
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.httpPatch
 import com.github.kittinunf.fuel.httpPost
-import com.github.kittinunf.fuel.httpPut
 import com.github.kittinunf.result.Result
 import io.micronaut.context.ApplicationContext
-import io.micronaut.core.type.Headers
 import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
