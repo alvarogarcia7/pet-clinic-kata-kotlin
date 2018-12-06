@@ -34,7 +34,7 @@ class HttpClient(private val url: URL) {
                 .body(objectMapper.writeValueAsString(payload))
         jsonBody.headers["Content-Type"] = "application/json"
         return jsonBody
-                .responseString { x, y, result ->
+                .responseString { _, _, result ->
                     when (result) {
                         is Result.Failure -> {
                             result.getException()
