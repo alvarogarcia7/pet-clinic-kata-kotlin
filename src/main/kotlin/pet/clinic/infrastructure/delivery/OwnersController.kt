@@ -36,8 +36,8 @@ class OwnersController(private val service: OwnerService) {
     @Post("/{id}")
     @Consumes
     @Produces
-    fun update(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
-        service.update(Id.from(id), body.toDomain())
+    fun upsert(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
+        service.upsert(Id.from(id), body.toDomain())
         return HttpResponse.accepted()
     }
 

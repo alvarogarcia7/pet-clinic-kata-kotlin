@@ -26,6 +26,8 @@ object OwnersSpec : Spek({
                 PetDTO("2", "Agatha")))
 
         it("should have a detail") {
+            val update = client.post("/owners/1", JOHN)
+            assertEquals(HttpStatus.ACCEPTED.code, update.response().second.statusCode)
 
             val content = client.get("/owners/1").response().second
 
