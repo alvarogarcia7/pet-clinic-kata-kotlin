@@ -43,18 +43,6 @@ object OwnersSpec : Spek({
             assertTrue(readAs<ResponseBody<List<ResponseBody<OwnerDTO>>>>(content).body.map { it.body }.containsAll(listOf(JOHN, HARRY)))
         }
         it("should be updateable") {
-            val list= client.get("/owners/")
-            list.responseString { _, res, it ->
-                when (it) {
-                    is Result.Success -> {
-                        val responseBody = readAs<ResponseBody<Any>>(res)
-                        assertTrue(responseBody.links.isNotEmpty())
-                    }
-                    else -> {
-                        fail("")
-                    }
-                }
-            }
             val update = client.post("/owners/", ChangeOwnerDTO("Jaume", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky"))))
             assertEquals(HttpStatus.ACCEPTED.code, update.response().second.statusCode)
             val newResource = update.response().second.headers["Location"]!![0]
