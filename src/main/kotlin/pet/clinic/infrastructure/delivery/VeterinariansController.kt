@@ -27,7 +27,7 @@ class VeterinariansController(private val service: VeterinarianService) {
         val dto = service.list(Id.from(id))
         return when (dto) {
             is None -> HttpResponse.notFound()
-            is Some -> HttpResponse.ok(ResponseBody(aNew(dto.t), listOf(MyResource("self", "/veterinarians/${dto.t.id.value}"))))
+            is Some -> HttpResponse.ok(ResponseBody(aNew(dto.t.value), listOf(MyResource("self", "/veterinarians/${dto.t.id.value}"))))
         }
     }
 
@@ -43,15 +43,14 @@ class VeterinariansController(private val service: VeterinarianService) {
     @Produces(MediaType.APPLICATION_JSON)
     fun list(): HttpResponse<ResponseBody<List<ResponseBody<VeterinarianDTO>>>> {
         return HttpResponse.ok(ResponseBody(allVeterinarians().map {
-            ResponseBody(aNew(it), listOf(MyResource("self", "/veterinarians/${it.id.value}")))
+            ResponseBody(aNew(it.value), listOf(MyResource("self", "/veterinarians/${it.id.value}")))
         }, listOf(MyResource("self", "/veterinarians/"))))
     }
 
     private fun allVeterinarians(): List<Persisted<Veterinarian>> = service.allVeterinarians()
 
-    private fun aNew(value: Persisted<Veterinarian>): VeterinarianDTO {
-        return VeterinarianDTO(value.value.name, map(value.value.specialties))
-
+    private fun aNew(value: Veterinarian): VeterinarianDTO {
+        return VeterinarianDTO(value.name, map(value.specialties))
     }
 
     private fun map(specialties: List<Specialty>): List<SpecialtyDTO> {
