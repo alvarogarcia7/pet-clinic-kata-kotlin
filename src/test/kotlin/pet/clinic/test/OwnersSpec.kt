@@ -35,10 +35,14 @@ object OwnersSpec : Spek({
             assertEquals(JOHN, readAs<ResponseBody<OwnerDTO>>(content).body)
         }
         it("should have a list of all of them") {
-            val creation1 = client.post("/owners/", JOHN)
-            assertEquals(HttpStatus.ACCEPTED.code, creation1.response().second.statusCode)
-            val creation2 = client.post("/owners/", HARRY)
-            assertEquals(HttpStatus.ACCEPTED.code, creation2.response().second.statusCode)
+            run {
+                val creation = client.post("/owners/", JOHN)
+                assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            }
+            run {
+                val creation = client.post("/owners/", HARRY)
+                assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            }
 
             val content = client.get("/owners/").response().second
 
