@@ -1,6 +1,5 @@
 package pet.clinic.test
 
-import com.github.kittinunf.result.Result
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
@@ -12,7 +11,6 @@ import pet.clinic.infrastructure.delivery.PetDTO
 import pet.clinic.infrastructure.delivery.ResponseBody
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.test.fail
 
 object OwnersSpec : Spek({
     val embeddedServer: EmbeddedServer = ApplicationContext.run(EmbeddedServer::class.java)
@@ -43,9 +41,9 @@ object OwnersSpec : Spek({
             assertTrue(readAs<ResponseBody<List<ResponseBody<OwnerDTO>>>>(content).body.map { it.body }.containsAll(listOf(JOHN, HARRY)))
         }
         it("should be updateable") {
-            val update = client.post("/owners/", ChangeOwnerDTO("Jaume", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky"))))
-            assertEquals(HttpStatus.ACCEPTED.code, update.response().second.statusCode)
-            val newResource = update.response().second.headers["Location"]!![0]
+            val response = client.post("/owners/", ChangeOwnerDTO("Jaume", "1450 Oak Blvd", "Morona", "608555387", listOf(PetDTO("1", "Lucky")))).response().second
+            assertEquals(HttpStatus.ACCEPTED.code, response.statusCode)
+            val newResource = response.headers["Location"]!![0]
 
             val content = client.get(newResource).response().second
 
