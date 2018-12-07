@@ -20,8 +20,9 @@ object VeterinariansSpec : Spek({
     describe("Veterinarians") {
         val listOfRadiology = listOf(SpecialtyDTO("1", "radiology"))
         val JOHN = VeterinarianDTO("John", listOfRadiology)
+        val PAUL = VeterinarianDTO("Paul", listOfRadiology)
 
-        it("should have a detail") {
+        it("create and fetch a resource with a detail") {
             val creation = client.post("/veterinarians/", JOHN)
             assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             val newResource = creation.response().second.headers["Location"]!![0]
@@ -30,11 +31,15 @@ object VeterinariansSpec : Spek({
 
             assertEquals(JOHN, readAs<ResponseBody<VeterinarianDTO>>(content).body)
         }
-        it("should have a list of all of them") {
-            val PAUL = VeterinarianDTO("Paul", listOfRadiology)
-            val creation = client.post("/veterinarians/", PAUL)
-            assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
-            creation.response().second
+        it("create and fetch a list of all of them") {
+            run {
+                val creation = client.post("/veterinarians/", PAUL)
+                assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            }
+            run {
+                val creation = client.post("/veterinarians/", JOHN)
+                assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
+            }
 
             val content = client.get("/veterinarians/").response().second
 
