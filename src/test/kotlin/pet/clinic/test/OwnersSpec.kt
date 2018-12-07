@@ -26,7 +26,7 @@ object OwnersSpec : Spek({
                 PetDTO("2", "Agatha")))
 
         it("should have a detail") {
-            val creation = client.post("/owners/", JOHN)
+            val creation = registerOwner(client, JOHN)
             assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             val newResource = creation.response().second.headers["Location"]!![0]
 
@@ -36,11 +36,11 @@ object OwnersSpec : Spek({
         }
         it("should have a list of all of them") {
             run {
-                val creation = client.post("/owners/", JOHN)
+                val creation = registerOwner(client, JOHN)
                 assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             }
             run {
-                val creation = client.post("/owners/", HARRY)
+                val creation = registerOwner(client, HARRY)
                 assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             }
 
@@ -72,5 +72,8 @@ object OwnersSpec : Spek({
         }
     }
 })
+
+private fun registerOwner(client: HttpClient, HARRY: OwnerDTO) =
+        client.post("/owners/", HARRY)
 
 
