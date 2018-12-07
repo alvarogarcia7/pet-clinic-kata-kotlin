@@ -5,7 +5,6 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import pet.clinic.infrastructure.delivery.MyResource
 import pet.clinic.infrastructure.delivery.ResponseBody
 import pet.clinic.infrastructure.delivery.SpecialtyDTO
 import pet.clinic.infrastructure.delivery.VeterinarianDTO
@@ -23,7 +22,7 @@ object VeterinariansSpec : Spek({
         val PAUL = VeterinarianDTO("Paul", listOfRadiology)
 
         it("create and fetch a resource with a detail") {
-            val creation = client.post("/veterinarians/", JOHN)
+            val creation = registerVeterinarian(client, JOHN)
             assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             val newResource = creation.response().second.headers["Location"]!![0]
 
@@ -33,11 +32,11 @@ object VeterinariansSpec : Spek({
         }
         it("create and fetch a list of all of them") {
             run {
-                val creation = client.post("/veterinarians/", PAUL)
+                val creation = registerVeterinarian(client, PAUL)
                 assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             }
             run {
-                val creation = client.post("/veterinarians/", JOHN)
+                val creation = registerVeterinarian(client, JOHN)
                 assertEquals(HttpStatus.ACCEPTED.code, creation.response().second.statusCode)
             }
 
@@ -47,6 +46,9 @@ object VeterinariansSpec : Spek({
         }
     }
 })
+
+private fun registerVeterinarian(client: HttpClient, veterinarian: VeterinarianDTO) =
+        client.post("/veterinarians/", veterinarian)
 
 
 
