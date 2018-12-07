@@ -39,8 +39,17 @@ class OwnersController(private val service: OwnerService) {
     @Post("/")
     @Consumes
     @Produces
-    fun upsert(body: ChangeOwnerDTO): HttpResponse<Void> {
+    fun upsert(body: OwnerDTO): HttpResponse<Void> {
         val id = Id.random()
+        service.upsert(id, body.toDomain())
+        return HttpResponse.accepted(URI.create("/owners/${id.value}"))
+    }
+
+    @Put("/{id}")
+    @Consumes
+    @Produces
+    fun update(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
+        val id = Id.from(id)
         service.upsert(id, body.toDomain())
         return HttpResponse.accepted(URI.create("/owners/${id.value}"))
     }
