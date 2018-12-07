@@ -67,7 +67,7 @@ object OwnersSpec : Spek({
     }
 })
 
-private fun registerOwner(client: HttpClient, HARRY: OwnerDTO) =
-        client.post("/owners/", HARRY)
+private fun registerOwner(client: HttpClient, owner: OwnerDTO) =
+        client.post("/owners/", owner)
 
 
