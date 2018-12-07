@@ -37,7 +37,6 @@ object VeterinariansSpec : Spek({
                     is Result.Success -> {
                         val x = it.get()
                         val responseBody = readAs<ResponseBody<Any>>(res)
-                        println(responseBody)
                         assertTrue(responseBody.links.isNotEmpty())
                     }
                     else -> {

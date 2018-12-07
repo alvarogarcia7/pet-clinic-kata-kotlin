@@ -11,6 +11,7 @@ import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.owners.Owner
 import pet.clinic.domain.owners.OwnerService
 import pet.clinic.domain.pets.Pet
+import java.net.URI
 
 @Controller("/owners")
 class OwnersController(private val service: OwnerService) {
@@ -19,38 +20,35 @@ class OwnersController(private val service: OwnerService) {
 
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    fun detail(id: String): String {
-        val dto = fakeOwner(id)
+    fun detail(id: String): HttpResponse<ResponseBody<Any>> {
+        val dto = service.list(Id.from(id))
         return when (dto) {
-            is None -> ""
-            is Some -> objectMapper.writeValueAsString(dto.t)
+            is None -> HttpResponse.notFound()
+            is Some -> HttpResponse.ok(ResponseBody(aNewOwner(dto.t).value, listOf(MyResource("self", "/owners/${dto.t.id.value}"))))
         }
     }
 
     @Get("/")
     @Produces(MediaType.APPLICATION_JSON)
-    fun list(): String {
-        return objectMapper.writeValueAsString(allOwners())
+    fun list(): HttpResponse<ResponseBody<List<ResponseBody<OwnerDTO>>>> {
+        return HttpResponse.ok(ResponseBody(allOwners().map {
+            ResponseBody(aNewOwner(it).value, listOf(MyResource("self", "/owners/${it.id.value}")))
+        }, listOf(MyResource("self", "/owners/"))))
     }
 
-    @Post("/{id}")
+    @Post("/")
     @Consumes
     @Produces
-    fun upsert(id: String, body: ChangeOwnerDTO): HttpResponse<Void> {
-        service.upsert(Id.from(id), body.toDomain())
-        return HttpResponse.accepted()
+    fun upsert(body: ChangeOwnerDTO): HttpResponse<Void> {
+        val id = Id.random()
+        service.upsert(id, body.toDomain())
+        return HttpResponse.accepted(URI.create("/owners/${id.value}"))
     }
 
-    private fun allOwners() =
-            service.all()
-                    .map(this::aNewOwner)
+    private fun allOwners() = service.all()
 
-    private fun fakeOwner(id: String) = this.service
-            .list(Id.from(id))
-            .map { aNewOwner(it) }
-
-    private fun aNewOwner(it: Persisted<Owner>): OwnerDTO {
-        return OwnerDTO(it.id.value, it.value.name.first, it.value.address.fullAddress, it.value.address.city, it.value.address.phone, map(it.value.pets))
+    private fun aNewOwner(it: Persisted<Owner>): Persisted<OwnerDTO> {
+        return Persisted(it.id, OwnerDTO(it.value.name.first, it.value.address.fullAddress, it.value.address.city, it.value.address.phone, map(it.value.pets)))
     }
 
     private fun map(specialties: List<Pet>): List<PetDTO> {
