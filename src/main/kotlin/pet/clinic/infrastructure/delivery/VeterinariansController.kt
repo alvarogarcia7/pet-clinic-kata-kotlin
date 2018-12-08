@@ -53,7 +53,7 @@ class VeterinariansController(private val service: VeterinarianService) {
         return VeterinarianDTO(value.name, map(value.specialties))
     }
 
-    private fun map(specialties: List<Specialty>): List<SpecialtyDTO> {
-        return specialties.map { SpecialtyDTO(it.id.value, it.description) }
+    private fun map(specialties: List<Persisted<Specialty>>): List<Persisted<SpecialtyDTO>> {
+        return specialties.map { Persisted(it.id, SpecialtyDTO(it.value.description)) }
     }
 }

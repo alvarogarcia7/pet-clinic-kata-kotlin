@@ -5,6 +5,8 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import pet.clinic.domain.common.Id
+import pet.clinic.domain.common.Persisted
 import pet.clinic.infrastructure.delivery.ResponseBody
 import pet.clinic.infrastructure.delivery.SpecialtyDTO
 import pet.clinic.infrastructure.delivery.VeterinarianDTO
@@ -17,7 +19,7 @@ object VeterinariansSpec : Spek({
     val client = HttpClient(url)
 
     describe("Veterinarians") {
-        val listOfRadiology = listOf(SpecialtyDTO("1", "radiology"))
+        val listOfRadiology = listOf(Persisted(Id.random(),SpecialtyDTO("radiology")))
         val JOHN = VeterinarianDTO("John", listOfRadiology)
         val PAUL = VeterinarianDTO("Paul", listOfRadiology)
 
