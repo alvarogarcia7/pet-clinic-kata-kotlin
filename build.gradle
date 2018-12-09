@@ -41,7 +41,7 @@ dependencies {
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     compile "io.arrow-kt:arrow-core:$arrow_version"
-
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.6.0'
 }
 
 shadowJar {

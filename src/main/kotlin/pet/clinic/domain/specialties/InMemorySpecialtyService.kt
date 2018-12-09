@@ -1,24 +1,27 @@
 package pet.clinic.domain.specialties
 
 import arrow.core.Either
-import io.micronaut.context.annotation.Prototype
+import io.micronaut.context.annotation.Context
 import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.veterinarians.Specialty
-import pet.clinic.domain.veterinarians.VeterinarianService
 
-@Prototype
-class SpecialtiesService(val veterinarianService: VeterinarianService) {
+interface SpecialtyService {
+    fun all(): List<Persisted<Specialty>>
+    fun register(specialty: Persisted<Specialty>): Either<Persisted<Specialty>, Persisted<Specialty>>
+}
+
+@Context
+open class InMemorySpecialtyService : SpecialtyService {
     private val values: MutableMap<String, Persisted<Specialty>> = mutableMapOf()
 
-    fun all(): List<Persisted<Specialty>> {
-        val result = veterinarianService.allVeterinarians().flatMap { it.value.specialties }
-        return result
+    override fun all(): List<Persisted<Specialty>> {
+        return values.values.toList()
     }
 
-    fun register(specialty: Persisted<Specialty>): Either<Persisted<Specialty>, Persisted<Specialty>> {
+    override fun register(specialty: Persisted<Specialty>): Either<Persisted<Specialty>, Persisted<Specialty>> {
         val specialtyId = specialty.value.asId()
 
-        return if(this.values.containsKey(specialtyId)){
+        return if (this.values.contains(specialtyId)) {
             Either.left(this.values[specialtyId]!!)
         } else {
             this.values[specialtyId] = specialty

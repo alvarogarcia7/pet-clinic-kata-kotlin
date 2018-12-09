@@ -4,26 +4,24 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Persisted
-import pet.clinic.domain.specialties.SpecialtiesService
-import pet.clinic.domain.veterinarians.InMemoryVeterinarianService
+import pet.clinic.domain.specialties.InMemorySpecialtyService
 import pet.clinic.domain.veterinarians.Specialty
-import pet.clinic.domain.veterinarians.Veterinarian
 import kotlin.test.assertTrue
 
 object SpecialtiesServiceSpec : Spek({
     describe("Specialties") {
         val morphology = Specialty("morphology")
         val radiology = Specialty("radiology")
-        val veterinarianService = InMemoryVeterinarianService()
-        lateinit var specialtiesService: SpecialtiesService
+        lateinit var specialtiesService: InMemorySpecialtyService
 
         beforeEach {
-            specialtiesService = SpecialtiesService(veterinarianService)
+            specialtiesService = InMemorySpecialtyService()
         }
 
         it("Groups the specialties of all veterinarians") {
-            registerSpecialty(veterinarianService, morphology)
-            registerSpecialty(veterinarianService, radiology)
+            registerSpecialty(specialtiesService, morphology)
+            registerSpecialty(specialtiesService, radiology)
+
             assertTrue(specialtiesService.all().map { it.value }.containsAll(listOf(morphology, radiology)))
         }
 
@@ -55,6 +53,7 @@ object SpecialtiesServiceSpec : Spek({
     }
 })
 
-private fun registerSpecialty(veterinarianService: InMemoryVeterinarianService, specialty: Specialty) {
-    veterinarianService.upsert(Id.random(), Persisted(Id.random(), Veterinarian("john", listOf(Persisted(Id.random(), specialty)))))
+fun registerSpecialty(service: InMemorySpecialtyService, specialty: Specialty) {
+    service.register(Persisted(Id.random(), specialty))
 }
+
