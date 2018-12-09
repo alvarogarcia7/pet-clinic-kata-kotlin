@@ -1,9 +1,10 @@
-package pet.clinic.domain.specialties
+package pet.clinic.test
 
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Persisted
+import pet.clinic.domain.specialties.SpecialtiesService
 import pet.clinic.domain.veterinarians.InMemoryVeterinarianService
 import pet.clinic.domain.veterinarians.Specialty
 import pet.clinic.domain.veterinarians.Veterinarian
