@@ -5,10 +5,10 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.runtime.server.EmbeddedServer
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import pet.clinic.infrastructure.delivery.ChangeOwnerDTO
-import pet.clinic.infrastructure.delivery.OwnerDTO
-import pet.clinic.infrastructure.delivery.PetDTO
-import pet.clinic.infrastructure.delivery.ResponseBody
+import pet.clinic.infrastructure.delivery.io.ChangeOwnerDTO
+import pet.clinic.infrastructure.delivery.io.OwnerDTO
+import pet.clinic.infrastructure.delivery.io.PetDTO
+import pet.clinic.infrastructure.delivery.hateoas.ResponseBody
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

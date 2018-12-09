@@ -1,4 +1,4 @@
-package pet.clinic.infrastructure.delivery
+package pet.clinic.infrastructure.delivery.io
 
 import pet.clinic.domain.veterinarians.Specialty
 

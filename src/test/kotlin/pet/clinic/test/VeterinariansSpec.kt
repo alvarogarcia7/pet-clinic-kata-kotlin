@@ -7,9 +7,9 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import pet.clinic.domain.common.Id
 import pet.clinic.domain.common.Persisted
-import pet.clinic.infrastructure.delivery.ResponseBody
-import pet.clinic.infrastructure.delivery.SpecialtyDTO
-import pet.clinic.infrastructure.delivery.VeterinarianDTO
+import pet.clinic.infrastructure.delivery.hateoas.ResponseBody
+import pet.clinic.infrastructure.delivery.io.SpecialtyDTO
+import pet.clinic.infrastructure.delivery.io.VeterinarianDTO
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -19,7 +19,7 @@ object VeterinariansSpec : Spek({
     val client = HttpClient(url)
 
     describe("Veterinarians") {
-        val listOfRadiology = listOf(Persisted(Id.random(),SpecialtyDTO("radiology")))
+        val listOfRadiology = listOf(Persisted(Id.random(), SpecialtyDTO("radiology")))
         val JOHN = VeterinarianDTO("John", listOfRadiology)
         val PAUL = VeterinarianDTO("Paul", listOfRadiology)
 

@@ -1,4 +1,4 @@
-package pet.clinic.infrastructure.delivery
+package pet.clinic.infrastructure.delivery.http
 
 import arrow.core.None
 import arrow.core.Some
@@ -11,6 +11,11 @@ import pet.clinic.domain.common.Persisted
 import pet.clinic.domain.owners.Owner
 import pet.clinic.domain.owners.OwnerService
 import pet.clinic.domain.pets.Pet
+import pet.clinic.infrastructure.delivery.hateoas.MyResource
+import pet.clinic.infrastructure.delivery.hateoas.ResponseBody
+import pet.clinic.infrastructure.delivery.io.ChangeOwnerDTO
+import pet.clinic.infrastructure.delivery.io.OwnerDTO
+import pet.clinic.infrastructure.delivery.io.PetDTO
 import java.net.URI
 
 @Controller("/owners")

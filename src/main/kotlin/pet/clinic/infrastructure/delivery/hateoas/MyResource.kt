@@ -1,4 +1,4 @@
-package pet.clinic.infrastructure.delivery
+package pet.clinic.infrastructure.delivery.hateoas
 
 import io.micronaut.http.hateos.AbstractResource
 
