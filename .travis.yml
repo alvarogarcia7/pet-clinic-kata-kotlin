@@ -1,5 +1,6 @@
 language: java
 install:
+  - gradlew wrapper
   - ./gradlew version
   - ./gradlew assemble
 script: ./gradlew testClasses test
